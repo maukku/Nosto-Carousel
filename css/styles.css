@@ -5,6 +5,41 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#carousel-container {
+  padding-top: 20px;
+  text-align: center;
+  max-width: 1000px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+#carousel {
+  text-align: center;
+  width: 665px;
+}
+#carousel img {
+  margin: 0;
+  width: 220px;
+  height: 200px;
+  border-radius: 5px;
+}
+
+#bestseller-item {
+  width: 250px;
+  height: 250px;
+  background-color: darkcyan;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+  background-color: #d9d6d6;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 3fr;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }/*# sourceMappingURL=styles.css.map */
