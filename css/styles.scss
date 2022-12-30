@@ -7,6 +7,8 @@ $md-margin: 16px;
 $bg-margin: 24px;
 
 body {
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -15,37 +17,86 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.item {
+  padding: $bg-padding;
+  width: 200px;
+  display: grid;
+}
+
 #carousel-container {
-  padding-top: 20px;
   text-align: center;
-  max-width: 1000px;
   display: grid;
   align-items: center;
   justify-content: center;
 }
 
 #carousel {
-    text-align: center; 
-    width: 665px; 
+  width: 1000px;
   img {
-    margin: 0;
-    width: 220px;
-    height: 200px;
-    border-radius: 5px;
+    max-width: 200px;
+    height: auto;
+    margin: auto;
+    border-radius: 20px;
+    padding: $sm-padding;
+    transition: 500ms;
+    &:hover {
+      transform: scale(1.2);
+      transition: 500ms;
+    }
   }
 }
+
 #bestseller-item {
-  width: 250px;
-  height: 250px;
-  background-color: darkcyan;
+  margin: $bg-margin;
+
+  img {
+    border-radius: 20px;
+
+    width: 500px;
+    height: 500px;
+    transition: 500ms;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: 500ms;
+    }
+  }
 }
+
+@media (max-width: 767px) {
+  #bestseller-item {
+    grid-column: 2;
+    align-self: center;
+    justify-self: center;
+  }
+  #carousel-container {
+    grid-column: 2;
+    align-self: center;
+    justify-self: center;
+  }
+}
+.product-name {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#carousel-title {
+  padding: $bg-padding;
+}
+
 .container {
-  width: 90%;
   margin: auto;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  width: 80%;
+  height: 80%;
   background-color: #d9d6d6;
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  grid-template-columns: 1fr 2fr;
 }
 
 code {
