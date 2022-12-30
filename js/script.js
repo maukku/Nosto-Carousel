@@ -61,7 +61,10 @@ $.ajax({
           formattedPrice +
           "</div>"
       );
-      carousel.append(item);
+
+      if (product.name !== mostViewedProduct.name) {
+        carousel.append(item);
+      }
     });
     let originalImageUrl;
     $(".product-img").hover(
