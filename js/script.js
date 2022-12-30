@@ -39,7 +39,6 @@ $.ajax({
         mostViewedProduct = product;
         max = product.scores.week.views;
       }
-      console.log(product.scores.week.views);
 
       let item = $("<div  class='item'>");
       let formattedPrice = parseFloat(product.price); // Parse the price as a float
@@ -49,17 +48,37 @@ $.ajax({
           product.imageUrl +
           '" class="product-img" data-url="' +
           product.url +
-          '"onerror="$(this).parent().remove()" ><div class="product-name">' +
+          '" onerror="$(this).parent().remove()" data-alternateurl="' +
+          product.alternateImageUrls +
+          '">' +
+          '<div class="product-name">' +
           product.name +
-          "</div><div class='product-brand'>" +
+          "</div>" +
+          '<div class="product-brand">' +
           product.brand +
           "</div>" +
-          "</div><div class='product-price'>€" +
+          '<div class="product-price">€' +
           formattedPrice +
           "</div>"
       );
       carousel.append(item);
     });
+    let originalImageUrl;
+    $(".product-img").hover(
+      (event) => {
+        originalImageUrl = $(event.target).attr("src");
+
+        let alternateImageUrls = $(event.target).data("alternateurl");
+        if (alternateImageUrls && alternateImageUrls.length > 0) {
+          $(event.target).attr("src", alternateImageUrls);
+        }
+      },
+      (event) => {
+        if (originalImageUrl) {
+          $(event.target).attr("src", originalImageUrl);
+        }
+      }
+    );
 
     $("#bestseller-item").html(
       '<img src="' + mostViewedProduct.imageUrl + '">'
