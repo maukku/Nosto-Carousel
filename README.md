@@ -9,3 +9,10 @@ In addition to displaying the product images, names, and prices this project als
 
 Clicking on a product image will take you to the product's page on the Nosto site, where you can learn more about the product and make a purchase.
 
+## Color Reference $nosto-color: 
+
+
+| Color             | Hex                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+| nosto-primary | ![#ff1ba4](https://via.placeholder.com/10/ff1ba4?text=+) #ff1ba4 |
+| nosto-secudary | ![#222149](https://via.placeholder.com/10/222149?text=+) #222149 |
