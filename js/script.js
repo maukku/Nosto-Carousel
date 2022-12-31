@@ -29,14 +29,14 @@ $.ajax({
       }
     }
   }`,
-  success: function (response) {
+  success: (response) => {
     let max = 0;
 
-    let mostViewedProduct = null;
+    let mostBoughtProduct = null;
     let carousel = $("#carousel");
     response.data.products.products.forEach((product) => {
       if (product.scores.week.views > max) {
-        mostViewedProduct = product;
+        mostBoughtProduct = product;
         max = product.scores.week.views;
       }
 
@@ -62,10 +62,11 @@ $.ajax({
           "</div>"
       );
 
-      if (product.name !== mostViewedProduct.name) {
+      if (product.name !== mostBoughtProduct.name) {
         carousel.append(item);
       }
     });
+
     let originalImageUrl;
     $(".product-img").hover(
       (event) => {
@@ -84,21 +85,29 @@ $.ajax({
     );
 
     $("#bestseller-item").html(
-      '<img src="' + mostViewedProduct.imageUrl + '">'
+      '<img class="product-img" src="' +
+        mostBoughtProduct.imageUrl +
+        '" data-url="' +
+        mostBoughtProduct.url +
+        "    >" +
+        '<div class="bestseller-label"></div>'
     );
-    $(".product-img").click((event) => {
+
+    $(".product-img ").click((event) => {
       let productURL = $(event.target).data("url");
       window.location.assign(productURL);
     });
 
     $(document).ready(() => {
       $("#carousel").slick({
-        slidesToShow: 3,
+        slidesToShow: 4,
+        adaptiveHeight: false,
+
         dots: false,
         draggable: false,
-
         infinite: false,
-        centerPadding: 10,
+        centerPadding: 0,
+        draggable: false,
         variableWidth: true,
       });
     });
