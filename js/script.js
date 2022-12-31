@@ -1,6 +1,4 @@
-// First we define an async function to handle the AJAX request
 const getProducts = async () => {
-  // Define the GraphQL query as a template literal
   const query = `
     query {
       products (limit: 50) {
@@ -23,7 +21,6 @@ const getProducts = async () => {
     }
   `;
 
-  // Make the AJAX request using fetch and providing the necessary options
   const response = await fetch("https://api.nosto.com/v1/graphql", {
     method: "POST",
     headers: {
@@ -35,79 +32,83 @@ const getProducts = async () => {
     body: query,
   });
 
-  // Convert the response to JSON
   const data = await response.json();
 
-  // Extract the products from the response data
   const products = data.data.products.products;
 
   let mostBoughtProduct = null;
 
-  // Loop through the products and find the one with the highest number of views
-  products.forEach((product) => {
+  // Finding the one product with the highest number of views
+  products.map((product) => {
     if (product.scores.week.views > 0) {
       mostBoughtProduct = product;
     }
   });
 
-  // Select the carousel element
   const carousel = document.querySelector("#carousel");
 
-  // Loop through the products again, creating elements for each product
+  // Creating elements for each product
   products.forEach((product) => {
-    // Parse the product price as a float
+    // removing innecesary zeros
     const formattedPrice = parseFloat(product.price);
-
-    // Create a new div element for the product
     const item = document.createElement("div");
     item.classList.add("item");
 
-    // Set the inner HTML for the product element
+    // carousel items  being added
     item.innerHTML = `
       <img src="${product.imageUrl}" class="product-img" data-url="${product.url}" onerror="$(this).parent().remove()" data-alternateurl="${product.alternateImageUrls}">
+      <div  class="product-brand">${product.brand}</div>
       <div class="product-name">${product.name}</div>
-      <div class="product-brand">${product.brand}</div>
+      
       <div class="product-price">€${formattedPrice}</div>
     `;
 
-    // Only append the product element to the carousel if it is not the most bought
+    // the most bought ones excluded from the rhe carousel, in a real case we would probably use an ID parameter
     if (product.name !== mostBoughtProduct.name) {
       carousel.appendChild(item);
     }
   });
 
-  // Add a hover event listener to the product images to switch between the main and alternate images
-  document.querySelectorAll(".product-img").forEach((img) => {
-    let originalImageUrl;
-    img.addEventListener("mouseenter", (event) => {
-      originalImageUrl = img.getAttribute("src");
-      const alternateImageUrls = img.getAttribute("data-alternateurl");
-      if (alternateImageUrls && alternateImageUrls.length > 0) {
-        img.setAttribute("src", alternateImageUrls);
-      }
-    });
-    img.addEventListener("mouseleave", (event) => {
-      if (originalImageUrl) {
-        img.setAttribute("src", originalImageUrl);
-      }
-    });
+  //  show alternate images when we hover , only on desktop
+
+  $(document).ready(() => {
+    let desktopWidth = $(window).width();
+
+    if (desktopWidth >= 1025) {
+      console.log(desktopWidth);
+      document.querySelectorAll(".product-img").forEach((img) => {
+        let originalImageUrl;
+        img.addEventListener("mouseenter", () => {
+          originalImageUrl = img.getAttribute("src");
+          const alternateImageUrls = img.getAttribute("data-alternateurl");
+          if (alternateImageUrls && alternateImageUrls.length > 0) {
+            img.setAttribute("src", alternateImageUrls);
+          }
+        });
+        img.addEventListener("mouseleave", () => {
+          if (originalImageUrl) {
+            img.setAttribute("src", originalImageUrl);
+          }
+        });
+      });
+    }
   });
 
-  // Set the inner HTML for the most bought product element
-  document.querySelector("#bestseller-item").innerHTML = `
-    <img class="product-img" src="${mostBoughtProduct.imageUrl}" data-url="${mostBoughtProduct.url}">
+  // Most bought product element html
+  document.querySelector("#bestsellerItem-container").innerHTML = `
+    <img class="product-img" src="${mostBoughtProduct.imageUrl}" 
+    data-url="${mostBoughtProduct.url}">
     <div class="bestseller-label">Best seller this week!</div>
   `;
 
-  // Add a click event listener to the product images to navigate to the product URL
+  //Product URL navigation
   document.querySelectorAll(".product-img").forEach((img) => {
-    img.addEventListener("click", (event) => {
+    img.addEventListener("click", () => {
       const productURL = img.getAttribute("data-url");
       window.location.assign(productURL);
     });
   });
 
-  // Initialize the carousel using the Slick library
   $(document).ready(() => {
     $("#carousel").slick({
       slidesToShow: 4,
@@ -122,5 +123,4 @@ const getProducts = async () => {
   });
 };
 
-// Call the getProducts function to make the initial AJAX request
 getProducts();
