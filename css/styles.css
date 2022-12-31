@@ -67,19 +67,30 @@ body {
 #bestseller-item {
   display: grid;
   justify-items: center;
-  align-items: center;
   padding: 10px;
+  position: relative;
 }
-
+#bestseller-item .bestseller-label {
+  position: absolute; /* Absolutely position the label */
+  top: 10%;
+  left: 50%; /* Position the label vertically in the middle */
+  transform: translate(-50%, -50%);
+  background-color: #eae7e7;
+  padding: 0.5em 1em;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 0.5em;
+  color: #ff1ba4;
+}
 #bestseller-item img {
+  position: relative;
   border-radius: 20px;
   width: 450px;
   height: 450px;
   transition: 500ms;
   margin: auto;
 }
-
-#bestseller-item img:hover {
+#bestseller-item #bestseller-item img:hover {
   transform: scale(1.1);
   transition: 500ms;
 }
