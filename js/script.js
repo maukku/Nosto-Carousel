@@ -33,18 +33,38 @@ const getProducts = async () => {
   });
 
   const data = await response.json();
-
   const products = data.data.products.products;
 
+  //  Product with the highest number of purchases (actually views).
   let mostBoughtProduct = null;
-
-  // Finding the one product with the highest number of views
-  products.map((product) => {
+products.map((product) => {
     if (product.scores.week.views > 0) {
       mostBoughtProduct = product;
     }
   });
 
+  showAlternateImgs();
+  fillCarousel(products, mostBoughtProduct);
+
+  createBestSellerItem(mostBoughtProduct);
+
+  setUrlNavigation();
+
+  $(document).ready(() => {
+    $("#carousel").slick({
+      slidesToShow: 4,
+      adaptiveHeight: true,
+      dots: false,
+      draggable: false,
+      infinite: false,
+      centerPadding: 0,
+      draggable: false,
+      variableWidth: true,
+    });
+  });
+};
+
+const fillCarousel = (products, mostBoughtProduct) => {
   const carousel = document.querySelector("#carousel");
 
   // Creating elements for each product
@@ -68,9 +88,30 @@ const getProducts = async () => {
       carousel.appendChild(item);
     }
   });
+};
 
-  //  show alternate images when we hover , only on desktop
+// create most bought product element html
+const createBestSellerItem = (mostBoughtProduct) => {
+  document.querySelector("#bestsellerItem-container").innerHTML = `
+    <img class="product-img" src="${mostBoughtProduct.imageUrl}" 
+    data-url="${mostBoughtProduct.url}">
+    <div class="bestseller-label">Best seller this week!</div>
+  `;
+};
 
+// Setting the product URL navigation when clicking
+
+const setUrlNavigation = () => {
+  document.querySelectorAll(".product-img").forEach((img) => {
+    img.addEventListener("click", () => {
+      const productURL = img.getAttribute("data-url");
+      window.location.assign(productURL);
+    });
+  });
+};
+
+// show alternate images when we hover , only on desktop
+const showAlternateImgs = () => {
   $(document).ready(() => {
     let desktopWidth = $(window).width();
 
@@ -93,34 +134,5 @@ const getProducts = async () => {
       });
     }
   });
-
-  // Most bought product element html
-  document.querySelector("#bestsellerItem-container").innerHTML = `
-    <img class="product-img" src="${mostBoughtProduct.imageUrl}" 
-    data-url="${mostBoughtProduct.url}">
-    <div class="bestseller-label">Best seller this week!</div>
-  `;
-
-  //Product URL navigation
-  document.querySelectorAll(".product-img").forEach((img) => {
-    img.addEventListener("click", () => {
-      const productURL = img.getAttribute("data-url");
-      window.location.assign(productURL);
-    });
-  });
-
-  $(document).ready(() => {
-    $("#carousel").slick({
-      slidesToShow: 4,
-      adaptiveHeight: true,
-      dots: false,
-      draggable: false,
-      infinite: false,
-      centerPadding: 0,
-      draggable: false,
-      variableWidth: true,
-    });
-  });
 };
-
 getProducts();
